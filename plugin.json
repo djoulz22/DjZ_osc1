@@ -1,0 +1,16 @@
+{
+  "slug": "DjZ_osc1",
+  "name": "DjZ_osc1",
+  "version": "1.0.0",
+  "license": "CC0-1.0",
+  "brand": "DjoulZ",
+  "author": "DjoulZ22",
+  "authorEmail": "jchenavas@gmail.com",
+  "authorUrl": "https://github.com/djoulz22",
+  "pluginUrl": "https://github.com/djoulz22/vcvrack-plugins",
+  "manualUrl": "https://github.com/djoulz22/vcvrack-plugins",
+  "sourceUrl": "https://github.com/djoulz22/vcvrack-plugins",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": []
+}
