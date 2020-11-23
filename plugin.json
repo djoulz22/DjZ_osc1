@@ -1,16 +1,25 @@
 {
-  "slug": "DjZ_osc1",
-  "name": "DjZ_osc1",
+  "slug": "DjoulZ",
+  "name": "DjoulZ",
   "version": "1.0.0",
   "license": "CC0-1.0",
-  "brand": "DjoulZ",
+  "brand": "DjoulZ-Free",
   "author": "DjoulZ22",
   "authorEmail": "jchenavas@gmail.com",
   "authorUrl": "https://github.com/djoulz22",
-  "pluginUrl": "https://github.com/djoulz22/vcvrack-plugins",
-  "manualUrl": "https://github.com/djoulz22/vcvrack-plugins",
-  "sourceUrl": "https://github.com/djoulz22/vcvrack-plugins",
+  "pluginUrl": "https://github.com/djoulz22/DjZ_osc1",
+  "manualUrl": "https://github.com/djoulz22/DjZ_osc1",
+  "sourceUrl": "https://github.com/djoulz22/DjZ_osc1",
   "donateUrl": "",
   "changelogUrl": "",
-  "modules": []
+  "modules": [
+    {
+      "slug": "DjZ_osc1",
+      "name": "DjZ_osc1",
+      "description": "Oscillator",
+      "tags": [
+        "Oscillator"
+      ]
+    }
+  ]
 }
