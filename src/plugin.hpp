@@ -9,3 +9,4 @@ extern Plugin* pluginInstance;
 
 // Declare each Model, defined in each module source file
 extern Model* modelDjZ_osc1;
+extern Model* modelMyModule;

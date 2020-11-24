@@ -20,6 +20,14 @@
       "tags": [
         "Oscillator"
       ]
+    },
+    {
+      "slug": "MyModule",
+      "name": "MyModule",
+      "description": "Oscillator",
+      "tags": [
+        "Oscillator"
+      ]
     }
   ]
 }
