@@ -1,11 +1,14 @@
 #include "plugin.hpp"
+#include "Knob.hpp"
 #include "dsp/oscillator.hpp"
 #include "dsp/pitch.hpp"
 
 using namespace djoulz::dsp;
+// using namespace djoulz::knob;
+
+// namespace djoulz {
 
 using simd::float_4;
-
 
 template <typename T>
 struct LowFrequencyOscillator {
@@ -353,7 +356,7 @@ private:
   };
 };
 
-struct DjZ_osc1 : Module {
+struct MoogOsc : Module {
 	enum ParamIds {
 		FREQ_PARAM,
 		PITCH_PARAM,
@@ -410,30 +413,6 @@ struct DjZ_osc1 : Module {
 		PULSE_10_WAVE2
 	};
 
-	// enum WaveBase {
-	// 	TRIANGLE_WAVE
-	// };
-
-	// enum LastWaveBase {
-	// 	SAW_WAVE,
-	// 	SQUARE_WAVE,
-	// 	PULSE_25_WAVE,
-	// 	PULSE_10_WAVE
-	// };
-
-	// enum SecondWave_osc1_2 {		
-	// 	TRIANGLESAW_WAVE	
-	// };
-
-	// enum SecondWave_osc3 {		
-	// 	REVERSESAW_WAVE	
-	// };
-
-	// typedef InheritEnum< WaveBase,SecondWave_osc1_2 > WaveOsc1_2_start;
-	// typedef InheritEnum< LastWaveBase,WaveOsc1_2_start > WaveOsc1_2;
-	// typedef InheritEnum< WaveBase,SecondWave_osc3 > WaveOsc3_start;
-	// typedef InheritEnum< LastWaveBase,WaveOsc3_start > WaveOsc3;
-
 	enum OctaveOsc1_2 {
 		OCTLO,
 		OCT32,
@@ -448,6 +427,30 @@ struct DjZ_osc1 : Module {
 	};
 
 	typedef InheritEnum< SpecOctave, OctaveOsc1_2 > OctaveOsc3;	
+
+	// struct OscillatorParams {
+	// 	std::vector<Param> params;
+	// 	float phase = 0.f;	
+	// 	float fine = 0.f;
+	// 	float wave = 0.f;
+	// 	float octave = 0.f;
+	// 	float freqency = rack::dsp::FREQ_C4;
+
+	// 	InputIds WAVE_INPUT;
+	// 	OutputIds OUT_OUTPUT;
+
+	// 	ParamIds FINE_PARAM = NUM_PARAMS;
+	// 	ParamIds WAVE_PARAM = NUM_PARAMS;
+	// 	ParamIds OCTAVE_PARAM = NUM_PARAMS;
+
+	// 	void getWaveParamValue() {
+	// 		wave = params[WAVE_PARAM].getValue();
+	// 	}
+	// };
+
+	// #define NUM_OSC 3
+	// OscillatorParams OSC[NUM_OSC];
+
 
 	float _phaseOsc1 = 0.f;
 	float _phaseOsc2 = 0.f;
@@ -476,18 +479,52 @@ struct DjZ_osc1 : Module {
 	float _freqParamOsc2 = rack::dsp::FREQ_C4;
 	float _freqParamOsc3 = rack::dsp::FREQ_C4;
 
-	// VoltageControlledOscillator<16, 16, float_4> oscillators[4];
-	// dsp::ClockDivider lightDivider;
+	// void configOSC() {
+	// 	OSC[0].params = params;
+	// 	OSC[0].WAVE_INPUT = OSC1_WAVE_INPUT;
+	// 	OSC[0].OUT_OUTPUT = OUT_OSC1_OUTPUT;
+	// 	OSC[0].WAVE_PARAM = OSC1_WAVE_PARAM;
+	// 	OSC[0].OCTAVE_PARAM = OSC1_OCTAVE_PARAM;
 
-	DjZ_osc1() {
+	// 	OSC[1].params = params;
+	// 	OSC[1].WAVE_INPUT = OSC2_WAVE_INPUT;
+	// 	OSC[1].OUT_OUTPUT = OUT_OSC2_OUTPUT;
+	// 	OSC[1].FINE_PARAM = OSC2_FINE_PARAM;
+	// 	OSC[1].WAVE_PARAM = OSC2_WAVE_PARAM;
+	// 	OSC[1].OCTAVE_PARAM = OSC2_OCTAVE_PARAM;
+
+	// 	OSC[2].params = params;
+	// 	OSC[2].WAVE_INPUT = OSC3_WAVE_INPUT;
+	// 	OSC[2].OUT_OUTPUT = OUT_OSC3_OUTPUT;
+	// 	OSC[2].FINE_PARAM = OSC3_FINE_PARAM;
+	// 	OSC[2].WAVE_PARAM = OSC3_WAVE_PARAM;
+	// 	OSC[2].OCTAVE_PARAM = OSC3_OCTAVE_PARAM;
+	// }
+
+	MoogOsc() {
+		// configOSC();
 		config(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS, NUM_LIGHTS);
 		configParam(PITCH_PARAM, -4.f, 4.f, 0.f, "");
+
+		// configParam(FREQ_PARAM, -54.f, 54.f, OSC[0].freqency, "Frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
+
+		// configParam(GLOBAL_FINE_PARAM, -1.f, 1.f, 0.f, "Global Fine frequency");
+		// configParam(OSC2_FINE_PARAM, -2.f, 2.f, OSC[1].fine, "Fine frequency Osc2");
+		// configParam(OSC3_FINE_PARAM, -2.f, 2.f, OSC[2].fine, "Fine frequency Osc3");		
+
+		// configParam(OSC1_OCTAVE_PARAM, -4.f, 4.f, OSC[0].octave, "Octave Osc1");
+		// configParam(OSC2_OCTAVE_PARAM, -4.f, 4.f, OSC[1].octave, "Octave Osc2");
+		// configParam(OSC3_OCTAVE_PARAM, -4.f, 4.f, OSC[2].octave, "Octave Osc3");
+
+		// configParam(OSC1_WAVE_PARAM, 0, 5, OSC[0].wave, "Waveform Osc1");
+		// configParam(OSC2_WAVE_PARAM, 0, 5, OSC[1].wave, "Waveform Osc2");
+		// configParam(OSC3_WAVE_PARAM, 0, 5, OSC[2].wave, "Waveform Osc3");
 
 		configParam(FREQ_PARAM, -54.f, 54.f, _freqParamOsc1, "Frequency", " Hz", dsp::FREQ_SEMITONE, dsp::FREQ_C4);
 
 		configParam(GLOBAL_FINE_PARAM, -1.f, 1.f, _fine, "Global Fine frequency");
-		configParam(OSC2_FINE_PARAM, -1.f, 1.f, _fineOsc2, "Fine frequency Osc2");
-		configParam(OSC3_FINE_PARAM, -1.f, 1.f, _fineOsc3, "Fine frequency Osc3");		
+		configParam(OSC2_FINE_PARAM, -2.f, 2.f, _fineOsc2, "Fine frequency Osc2");
+		configParam(OSC3_FINE_PARAM, -2.f, 2.f, _fineOsc3, "Fine frequency Osc3");		
 
 		configParam(OSC1_OCTAVE_PARAM, -4.f, 4.f, _octaveOSC1, "Octave Osc1");
 		configParam(OSC2_OCTAVE_PARAM, -4.f, 4.f, _octaveOSC2, "Octave Osc2");
@@ -499,13 +536,20 @@ struct DjZ_osc1 : Module {
 	}
 
 	bool active() {
-		return outputs[OUT_OSC1_OUTPUT].isConnected() || outputs[OUT_OSC2_OUTPUT].isConnected() || outputs[OUT_OSC3_OUTPUT].isConnected();
+		// bool active = false;
+		// for(int oscID=0;oscID<NUM_OSC;oscID++) {
+		// 	if (outputs[OSC[oscID].OUT_OUTPUT].isConnected()) {
+		// 		active = true;
+		// 	}
+		// }
+		// return active;
+		return (outputs[OUT_OSC1_OUTPUT].isConnected() || outputs[OUT_OSC2_OUTPUT].isConnected() || outputs[OUT_OSC3_OUTPUT].isConnected());
 	}
 
 	void processAlways(const ProcessArgs& args) {
-		// _waveOSC1 = (WaveOsc1_2)inputs[OSC1_WAVE_INPUT].getVoltage();
-		// _waveOSC2 = (WaveOsc1_2)inputs[OSC2_WAVE_INPUT].getVoltage();
-		// _waveOSC3 = (WaveOsc3)inputs[OSC3_WAVE_INPUT].getVoltage();
+		// for(int oscID=0;oscID<NUM_OSC;oscID++) {
+			
+		// }
 
 		_waveOSC1 = params[OSC1_WAVE_PARAM].getValue();
 		_waveOSC2 = params[OSC2_WAVE_PARAM].getValue();
@@ -520,34 +564,75 @@ struct DjZ_osc1 : Module {
 	VoltageControlledOscillator<16, 16, float_4> oscillators_2[4];
 	VoltageControlledOscillator<16, 16, float_4> oscillators_3[4];
 
+	// void processOsc(VoltageControlledOscillator<16, 16, float_4> *oscillators, int channels, float sampleTime, InputIds waveInputID, InputIds octaveInputID, float waveOSC, OutputIds outputID) {
+	// 	for (int c = 0; c < channels; c += 4) {		
+	// 		float pitch = inputs[PITCH_INPUT].getVoltage(c);
+	// 		if (outputs[outputID].isConnected()) {
+	// 			auto* oscillator = &oscillators[c / 4];
+	// 			oscillator->channels = std::min(channels - c, 4);
+	// 			oscillator->analog = true;
+	// 			oscillator->soft = false;
+	// 			oscillator->syncEnabled = false;	
+
+	// 			float waveOSCprocess = roundf(waveOSC + inputs[OSC1_WAVE_INPUT].getPolyVoltage(c));
+
+	// 			if (waveOSCprocess == (float)SQUARE_WAVE) {
+	// 				oscillator->setPulseWidth(0.5f);
+	// 			}
+	// 			else if (waveOSCprocess == (float)PULSE_25_WAVE) {
+	// 				oscillator->setPulseWidth(0.25f);
+	// 			}
+	// 			else if (waveOSCprocess == (float)PULSE_10_WAVE) {
+	// 				oscillator->setPulseWidth(0.1f);
+	// 			}
+	// 			else {
+	// 				oscillator->setPulseWidth(0.f);
+	// 			}
+
+	// 			float octave_osc1 = _freqParamOsc1 + roundf(_octaveOSC1 + inputs[octaveInputID].getPolyVoltage(c));
+	// 			float pitchOsc1 = pitch + octave_osc1;						
+	// 			oscillator->setPitch(pitchOsc1);									
+	// 			oscillator->process(sampleTime, 0.f);
+
+	// 			if (waveOSCprocess == (float)TRIANGLE_WAVE) {
+	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->tri(), c);	
+	// 			}
+	// 			else if (waveOSCprocess == (float)TRIANGLESAW_WAVE) {
+	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * (oscillator->tri()+oscillator->saw()), c);	
+	// 				// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);	
+	// 			}
+	// 			else if (waveOSCprocess == (float)SAW_WAVE) {
+	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
+	// 			}
+	// 			else if ( (waveOSCprocess == (float)SQUARE_WAVE) || (waveOSCprocess == (float)PULSE_25_WAVE) || (waveOSCprocess == (float)PULSE_10_WAVE))  {
+	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->sqr(), c);
+	// 			}
+	// 			else {
+					
+	// 			}
+
+	// 			outputs[OUT_OSC1_OUTPUT].setChannels(channels);
+	// 		}
+	// 	}
+	// }
+
 	void process(const ProcessArgs& args) override {
 
 		processAlways(args);
 
 		if (active()) {
-			// const float referencePitch = 0.f;
-			// const float referenceOctave = OCT16*2.0f;
-
 			float freqParam = params[FREQ_PARAM].getValue() / 12.f;
 			freqParam += rack::dsp::quadraticBipolar(params[GLOBAL_FINE_PARAM].getValue()) * 3.f / 12.f;
 
-			// float pitch = params[PITCH_PARAM].getValue();
-			// pitch += inputs[PITCH_INPUT].getVoltage();
-			// pitch = clamp(pitch, -4.f, 4.f);
-
-			_freqParamOsc1 = 0.f; //* std::pow(2.f, pitch);
-			_freqParamOsc2 = 0.f; //* std::pow(2.f, pitch);
-			_freqParamOsc3 = 0.f; //* std::pow(2.f, pitch);
+			_freqParamOsc1 = 0.f;
+			_freqParamOsc2 = 0.f;
+			_freqParamOsc3 = 0.f;
 
 			_freqParamOsc2 += rack::dsp::quadraticBipolar(params[OSC2_FINE_PARAM].getValue()) * 3.f / 12.f;
 			_freqParamOsc3 += rack::dsp::quadraticBipolar(params[OSC3_FINE_PARAM].getValue()) * 3.f / 12.f;
 
 			int channels = std::max(inputs[PITCH_INPUT].getChannels(), 1);
 			
-			// The default pitch is C4 = 261.6256f
-			// float freq = dsp::FREQ_C4 * std::pow(2.f, pitch);
-
-			// for (int osc = 0; osc < 3; osc++){	
 			for (int i=0; i<3; i++) {
 				for (int c = 0; c < channels; c += 4) {							
 					float pitch = inputs[PITCH_INPUT].getVoltage(c);
@@ -580,17 +665,17 @@ struct DjZ_osc1 : Module {
 						oscillator->process(args.sampleTime, 0.f);
 
 						if (waveOSC1 == (float)TRIANGLE_WAVE) {
-							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->tri(), c);	
+							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->tri(), c);	
 						}
 						else if (waveOSC1 == (float)TRIANGLESAW_WAVE) {
-							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->tri()+oscillator->saw(), c);	
-							// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->saw(), c);	
+							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * (oscillator->tri()+oscillator->saw()), c);	
+							// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);	
 						}
 						else if (waveOSC1 == (float)SAW_WAVE) {
-							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->saw(), c);
+							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
 						}
 						else if ( (waveOSC1 == (float)SQUARE_WAVE) || (waveOSC1 == (float)PULSE_25_WAVE) || (waveOSC1 == (float)PULSE_10_WAVE))  {
-							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->sqr(), c);
+							outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->sqr(), c);
 						}
 						else {
 							
@@ -627,17 +712,17 @@ struct DjZ_osc1 : Module {
 						oscillator->process(args.sampleTime, 0.f);
 						
 						if (waveOSC2 == (float)TRIANGLE_WAVE) {
-							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(oscillator->tri(), c);	
+							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * oscillator->tri(), c);	
 						}
 						else if (waveOSC2 == (float)TRIANGLESAW_WAVE) {
-							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(oscillator->tri()+oscillator->saw(), c);	
-							// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(oscillator->saw(), c);	
+							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * (oscillator->tri()+oscillator->saw()), c);	
+							// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);	
 						}
 						else if (waveOSC2 == (float)SAW_WAVE) {
-							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(oscillator->saw(), c);
+							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
 						}
 						else if ( (waveOSC2 == (float)SQUARE_WAVE) || (waveOSC2 == (float)PULSE_25_WAVE) || (waveOSC2 == (float)PULSE_10_WAVE))  {
-							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(oscillator->sqr(), c);
+							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * oscillator->sqr(), c);
 						}
 						else {
 							
@@ -675,16 +760,16 @@ struct DjZ_osc1 : Module {
 						oscillator->process(args.sampleTime, 0.f);
 
 						if (waveOSC3 == (float)TRIANGLE_WAVE2) {
-							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(oscillator->tri(), c);	
+							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->tri(), c);	
 						}
 						else if (waveOSC3 == (float)SAW_WAVE2) {
-							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(oscillator->saw(), c);
+							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
 						}
 						else if (waveOSC3 == (float)REVERSESAW_WAVE) {
-							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(-oscillator->saw(), c);
+							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * -oscillator->saw(), c);
 						}
 						else if ( (waveOSC3 == (float)SQUARE_WAVE2) || (waveOSC3 == (float)PULSE_25_WAVE2) || (waveOSC3 == (float)PULSE_10_WAVE2))  {
-							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(oscillator->sqr(), c);
+							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->sqr(), c);
 						}
 						else {
 							
@@ -700,35 +785,35 @@ struct DjZ_osc1 : Module {
 };
 
 
-struct DjZ_osc1Widget : ModuleWidget {
-	DjZ_osc1Widget(DjZ_osc1* module) {
+struct MoogOscWidget : ModuleWidget {
+	MoogOscWidget(MoogOsc* module) {
 		setModule(module);
-		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/DjZ_osc1.svg")));
+		setPanel(APP->window->loadSvg(asset::plugin(pluginInstance, "res/MoogOsc.svg")));
 
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		// addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(24.1, 25.26)), module, DjZ_osc1::PITCH_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(24.1, 25.26)), module, DjZ_osc1::PITCH_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(9.07, 109.99)), module, MoogOsc::PITCH_INPUT));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25, 10.578)), module, DjZ_osc1::OSC1_OCTAVE_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25, 50.578)), module, DjZ_osc1::OSC2_OCTAVE_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(25, 100.578)), module, DjZ_osc1::OSC3_OCTAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(34.963, 27.214)), module, MoogOsc::OSC1_OCTAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(34.963, 65.012)), module, MoogOsc::OSC2_OCTAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(34.963, 103.66)), module, MoogOsc::OSC3_OCTAVE_PARAM));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(70, 50.578)), module, DjZ_osc1::OSC2_FINE_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(70, 100.578)), module, DjZ_osc1::OSC3_FINE_PARAM));
+		addParam(createParamCentered<RoundSmallKnob>(mm2px(Vec(67.658, 63.122)), module, MoogOsc::OSC2_FINE_PARAM));
+		addParam(createParamCentered<RoundSmallKnob>(mm2px(Vec(67.658, 102.243)), module, MoogOsc::OSC3_FINE_PARAM));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(100, 10.578)), module, DjZ_osc1::OSC1_WAVE_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(100, 50.578)), module, DjZ_osc1::OSC2_WAVE_PARAM));
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(100, 100.578)), module, DjZ_osc1::OSC3_WAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(100.353, 27.214)), module, MoogOsc::OSC1_WAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(100.353, 65.012)), module, MoogOsc::OSC2_WAVE_PARAM));
+		addParam(createParamCentered<RoundSnapDKnob>(mm2px(Vec(100.353, 103.66)), module, MoogOsc::OSC3_WAVE_PARAM));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 10.578)), module, DjZ_osc1::OUT_OSC1_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 50.578)), module, DjZ_osc1::OUT_OSC2_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 100.578)), module, DjZ_osc1::OUT_OSC3_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 18.332)), module, MoogOsc::OUT_OSC1_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 62.177)), module, MoogOsc::OUT_OSC2_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(120, 109.99)), module, MoogOsc::OUT_OSC3_OUTPUT));
 	}
 };
 
+// }
 
-Model* modelDjZ_osc1 = createModel<DjZ_osc1, DjZ_osc1Widget>("DjZ_osc1");
+Model* modelMoogOsc = createModel<MoogOsc, MoogOscWidget>("MoogOsc");
