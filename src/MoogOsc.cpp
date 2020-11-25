@@ -309,7 +309,6 @@ struct VoltageControlledOscillator {
 		}
 		return v;
 	}
-
 	T saw() {
 		return sawValue;
 	}
@@ -322,6 +321,13 @@ struct VoltageControlledOscillator {
 		return sqrValue;
 	}
 
+	T trisaw() {
+		return tri()+saw();
+	}
+	T revertsaw() {
+		return -saw();
+	}
+	
 	T light() {
 		return simd::sin(2 * T(M_PI) * phase);
 	}
@@ -599,7 +605,6 @@ struct MoogOsc : Module {
 	// 			}
 	// 			else if (waveOSCprocess == (float)TRIANGLESAW_WAVE) {
 	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * (oscillator->tri()+oscillator->saw()), c);	
-	// 				// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);	
 	// 			}
 	// 			else if (waveOSCprocess == (float)SAW_WAVE) {
 	// 				outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
@@ -715,7 +720,7 @@ struct MoogOsc : Module {
 							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * oscillator->tri(), c);	
 						}
 						else if (waveOSC2 == (float)TRIANGLESAW_WAVE) {
-							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * (oscillator->tri()+oscillator->saw()), c);	
+							outputs[OUT_OSC2_OUTPUT].setVoltageSimd(5.f * (oscillator->trisaw()), c);	
 							// outputs[OUT_OSC1_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);	
 						}
 						else if (waveOSC2 == (float)SAW_WAVE) {
@@ -766,7 +771,7 @@ struct MoogOsc : Module {
 							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->saw(), c);
 						}
 						else if (waveOSC3 == (float)REVERSESAW_WAVE) {
-							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * -oscillator->saw(), c);
+							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->revertsaw(), c);
 						}
 						else if ( (waveOSC3 == (float)SQUARE_WAVE2) || (waveOSC3 == (float)PULSE_25_WAVE2) || (waveOSC3 == (float)PULSE_10_WAVE2))  {
 							outputs[OUT_OSC3_OUTPUT].setVoltageSimd(5.f * oscillator->sqr(), c);
